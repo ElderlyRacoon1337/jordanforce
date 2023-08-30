@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Sneakers } from './schemas/sneakers.schema';
+import { Model } from 'mongoose';
+import { User } from 'src/users/schemas/users.schema';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SneakersService {
+  constructor(
+    @InjectModel(Sneakers.name) private sneakersModel: Model<Sneakers>,
+    private usersService: UsersService,
+  ) {}
+
   create(createSneakerDto: CreateSneakerDto) {
-    return 'This action adds a new sneaker';
+    const sneakers = new this.sneakersModel(createSneakerDto);
+    return sneakers.save();
   }
 
-  findAll() {
-    return `This action returns all sneakers`;
+  async findAll() {
+    return this.sneakersModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sneaker`;
+  findOne(id: string) {
+    return this.sneakersModel.findById(id);
   }
 
-  update(id: number, updateSneakerDto: UpdateSneakerDto) {
-    return `This action updates a #${id} sneaker`;
+  async update(userId: string, id: string, updateSneakerDto: UpdateSneakerDto) {
+    const user = await this.usersService.findOne(userId);
+    if (!user.isAdmin) {
+      throw new ForbiddenException("You don't have permission to do this");
+    }
+    await this.sneakersModel.findByIdAndUpdate(id, updateSneakerDto);
+    const updatedSneakers = await this.sneakersModel.findById(id);
+    return updatedSneakers;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sneaker`;
+  async remove(userId: string, id: string) {
+    const user = await this.usersService.findOne(userId);
+    if (!user.isAdmin) {
+      throw new ForbiddenException("You don't have permission to do this");
+    }
+    await this.sneakersModel.findByIdAndDelete(id);
+    return { message: `Sneakers successfully deleted` };
   }
 }

@@ -13,8 +13,8 @@ export class Sneakers {
   @Prop({ required: true })
   price: number;
 
-  @Prop({ required: false })
-  imageUrl?: string;
+  @Prop({ required: true })
+  imageUrl: string;
 
   @Prop({ required: true })
   sizes: number[];
