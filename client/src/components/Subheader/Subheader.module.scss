@@ -1,0 +1,22 @@
+.root {
+  height: 40px;
+  border-bottom: 1px solid var(--divider);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .menu__item {
+    margin-right: 50px;
+    font-weight: 300;
+  }
+
+  li:last-child {
+    margin-right: 0;
+  }
+}

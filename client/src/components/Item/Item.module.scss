@@ -1,0 +1,45 @@
+.root {
+  padding: 25px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background);
+  margin-bottom: 20px;
+  width: 420px;
+}
+
+.root:nth-child(3) {
+  margin-right: 0;
+  border-right: none;
+}
+
+.image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: var(--fontSizeSmall);
+  font-weight: 500;
+}
+
+.price {
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+}
+
+.button {
+  width: 100%;
+}
+
+.like {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

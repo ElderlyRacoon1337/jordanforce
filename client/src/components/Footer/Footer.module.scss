@@ -1,0 +1,20 @@
+.root {
+  background-color: #fafafa;
+  padding: 50px 20px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  li {
+    margin-bottom: 10px;
+    font-weight: 300;
+  }
+
+  .title {
+    font-weight: 500;
+  }
+}
