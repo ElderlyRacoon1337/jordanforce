@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider themeOptions={themeOptions}>
       <CssBaseline />
-      <TopBar />
+      {/* <TopBar /> */}
       <Sticky innerZ={1}>
         <Header />
       </Sticky>
