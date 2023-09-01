@@ -68,12 +68,16 @@ export class SneakersController {
     @Param('id') id: string,
     @Body() updateSneakerDto: UpdateSneakerDto,
   ) {
-    return this.sneakersService.update(req.user.sub, id, updateSneakerDto);
+    return this.sneakersService.update(
+      req.cookies.user.sub,
+      id,
+      updateSneakerDto,
+    );
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Request() req, @Param('id') id: string) {
-    return this.sneakersService.remove(req.user.sub, id);
+    return this.sneakersService.remove(req.cookies.user.sub, id);
   }
 }
