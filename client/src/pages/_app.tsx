@@ -1,10 +1,8 @@
-import { Subheader } from "@/components/Subheader";
 import { Header } from "@/components/Header";
 import "@/styles/globals.css";
 import { CssBaseline, ThemeProvider } from "cutie-ui";
 import type { AppProps } from "next/app";
 import Sticky from "react-stickynode";
-import { TopBar } from "@/components/TopBar";
 import { Footer } from "@/components/Footer";
 
 const themeOptions = {
