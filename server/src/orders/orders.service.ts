@@ -4,15 +4,19 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
 import { Order } from './schemas/order.schema';
+import { jwtDecode } from 'src/auth/jwt.decode';
+import { SneakersService } from 'src/sneakers/sneakers.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectModel(Order.name) private ordersModel: Model<Order>,
     private usersService: UsersService,
+    private sneakersService: SneakersService,
   ) {}
 
-  async create(userId: string, createOrderDto: CreateOrderDto) {
+  async create(token: string, createOrderDto: CreateOrderDto) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (!user) return;
     const createdOrder = new this.ordersModel({
@@ -22,16 +26,23 @@ export class OrdersService {
     return createdOrder.save();
   }
 
-  async findAll(userId: string) {
+  async findAll(token: string) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (!user) return;
     if (!user.isAdmin) {
       throw new ForbiddenException('No access');
     }
-    return this.ordersModel.find();
+    const orders = await this.ordersModel
+      .find()
+      .populate('user')
+      .populate('sneakers');
+
+    return orders;
   }
 
-  async findOne(userId: string, id: string) {
+  async findOne(token: string, id: string) {
+    const userId = jwtDecode(token);
     const order = await this.ordersModel.findById(id);
     const user = await this.usersService.findOne(userId);
 
@@ -43,7 +54,8 @@ export class OrdersService {
     }
   }
 
-  async findOrdersByUser(userId: string, id: string) {
+  async findOrdersByUser(token: string, id: string) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (userId === id || user.isAdmin) {
       return this.ordersModel.find({ user: id });
@@ -52,7 +64,8 @@ export class OrdersService {
     }
   }
 
-  async remove(userId: string, id: string) {
+  async remove(token: string, id: string) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (!user.isAdmin) throw new ForbiddenException('No access');
 

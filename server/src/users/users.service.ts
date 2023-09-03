@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
+import { jwtDecode } from 'src/auth/jwt.decode';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +28,7 @@ export class UsersService {
   }
 
   async findOne(id: string) {
+    console.log(id);
     const user = await this.userModel.findOne({ _id: id });
     return user;
   }
@@ -36,7 +38,8 @@ export class UsersService {
     return user;
   }
 
-  async remove(userId: string, id: string) {
+  async remove(token: string, id: string) {
+    const userId = jwtDecode(token);
     const user = await this.userModel.findById(userId);
     if (!user.isAdmin) {
       throw new ForbiddenException("You don't have permission to do this");

@@ -3,3 +3,26 @@
   flex-wrap: wrap;
   padding-top: 30px;
 }
+
+.menu {
+  display: flex;
+  padding: 20px;
+
+  .menu_el {
+    text-align: center;
+    color: var(--textSecondary);
+    background-color: var(--textOpposite);
+
+    li {
+      font-size: 0.9rem;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  }
+
+  .button {
+    width: 200px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+}

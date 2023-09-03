@@ -10,6 +10,7 @@ import {
   UploadedFile,
   UseGuards,
   Request,
+  Response,
 } from '@nestjs/common';
 import { SneakersService } from './sneakers.service';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
@@ -48,7 +49,12 @@ export class SneakersController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return { url: `images/${fileName}` };
+    return { url: `/${fileName}` };
+  }
+
+  @Get('images')
+  getImage(@Response() res) {
+    return res.sendFile();
   }
 
   @Get()
@@ -69,7 +75,7 @@ export class SneakersController {
     @Body() updateSneakerDto: UpdateSneakerDto,
   ) {
     return this.sneakersService.update(
-      req.cookies.user.sub,
+      req.cookies.access_token,
       id,
       updateSneakerDto,
     );
@@ -78,6 +84,6 @@ export class SneakersController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Request() req, @Param('id') id: string) {
-    return this.sneakersService.remove(req.cookies.user.sub, id);
+    return this.sneakersService.remove(req.cookies.access_token, id);
   }
 }

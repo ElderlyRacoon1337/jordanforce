@@ -17,7 +17,7 @@ export const UserApi = (instance: AxiosInstance) => ({
   },
 
   async getMe() {
-    const { data } = await instance.get("users/profile");
+    const { data } = await instance.get("auth/profile");
     return data;
   },
 

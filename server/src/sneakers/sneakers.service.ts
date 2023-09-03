@@ -6,6 +6,7 @@ import { Sneakers } from './schemas/sneakers.schema';
 import { Model } from 'mongoose';
 import { User } from 'src/users/schemas/users.schema';
 import { UsersService } from 'src/users/users.service';
+import { jwtDecode } from 'src/auth/jwt.decode';
 
 @Injectable()
 export class SneakersService {
@@ -27,7 +28,8 @@ export class SneakersService {
     return this.sneakersModel.findById(id);
   }
 
-  async update(userId: string, id: string, updateSneakerDto: UpdateSneakerDto) {
+  async update(token: string, id: string, updateSneakerDto: UpdateSneakerDto) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (!user.isAdmin) {
       throw new ForbiddenException("You don't have permission to do this");
@@ -37,7 +39,8 @@ export class SneakersService {
     return updatedSneakers;
   }
 
-  async remove(userId: string, id: string) {
+  async remove(token: string, id: string) {
+    const userId = jwtDecode(token);
     const user = await this.usersService.findOne(userId);
     if (!user.isAdmin) {
       throw new ForbiddenException("You don't have permission to do this");

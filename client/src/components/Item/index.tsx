@@ -6,7 +6,7 @@ export const Item = ({ title, image }: any) => {
     <div className={styles.root}>
       <figure
         className={styles.image}
-        style={{ backgroundImage: `url(${image})` }}
+        style={{ backgroundImage: `url('${image}')` }}
       />
       <h5 className={styles.title}>{title}</h5>
       <p className={styles.price}>от 25 000 руб.</p>

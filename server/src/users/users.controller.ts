@@ -35,6 +35,6 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Request() req, @Param('id') id: string) {
-    return this.usersService.remove(req.cookies.user.sub, id);
+    return this.usersService.remove(req.cookies.access_token, id);
   }
 }

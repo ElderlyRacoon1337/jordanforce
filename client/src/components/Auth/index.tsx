@@ -1,12 +1,56 @@
 import React, { useState } from "react";
 import styles from "./Auth.module.scss";
 import { Button, Icon, IconButton, Input, Link, Tab, Tabs } from "cutie-ui";
+import { Api } from "@/utils/api";
+import {
+  LoadingStatus,
+  setLoadingStatus,
+  setUserData,
+} from "@/redux/slices/userSlice";
+import { store } from "@/redux/store";
 
 export const Auth = ({ setPopupOpen }: any) => {
   const [value, setValue] = useState(1);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [name, setName] = useState("");
+  const [registrationEmail, setRegistrationEmail] = useState("");
+  const [registrationPassword, setRegistrationPassword] = useState("");
+
+  const handleLogin = async () => {
+    store.dispatch(setLoadingStatus(LoadingStatus.LOADING));
+    try {
+      const data = await Api().user.login({
+        email: loginEmail,
+        password: loginPassword,
+      });
+      store.dispatch(setUserData(data));
+      store.dispatch(setLoadingStatus(LoadingStatus.LOADED));
+    } catch (e) {
+      console.log(e);
+      store.dispatch(setLoadingStatus(LoadingStatus.ERROR));
+    }
+    setPopupOpen(false);
+  };
+
+  const handleRegistration = async () => {
+    try {
+      const { data } = await Api().user.register({
+        name,
+        email: loginEmail,
+        password: loginPassword,
+      });
+      setUserData(data);
+      setPopupOpen(false);
+    } catch (e) {
+      console.log(e);
+      setPopupOpen(false);
+    }
   };
 
   return (
@@ -40,27 +84,34 @@ export const Auth = ({ setPopupOpen }: any) => {
           </IconButton>
         </div>
         <Tabs
-          // variant="contained"
-          color="black"
+          color="textPrimary"
           size="small"
-          // fullWidth
           value={value}
           onChange={handleChange}
           labels={["Вход", "Регистрация"]}
         >
           <Tab className={styles.tab}>
             <Input
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.currentTarget.value)}
               label
               className={styles.input}
               size="large"
               placeholder="Email"
               autoFocus
             />
-            <Input className={styles.input} size="large" placeholder="Пароль" />
-            <Button
-              color="textPrimary"
+            <Input
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.currentTarget.value)}
+              className={styles.input}
               size="large"
-              variant="contained"
+              placeholder="Пароль"
+            />
+            <Button
+              onClick={handleLogin}
+              color="submitButton"
+              size="large"
+              variant="contained3"
               className={styles.button}
             >
               Продолжить
@@ -76,17 +127,32 @@ export const Auth = ({ setPopupOpen }: any) => {
           </Tab>
           <Tab className={styles.tab}>
             <Input
+              value={name}
+              onChange={(e) => setName(e.currentTarget.value)}
               className={styles.input}
               size="large"
               placeholder="Имя"
               autoFocus
             />
-            <Input className={styles.input} size="large" placeholder="Email" />
-            <Input className={styles.input} size="large" placeholder="Пароль" />
-            <Button
-              color="textPrimary"
+            <Input
+              value={registrationEmail}
+              onChange={(e) => setRegistrationEmail(e.currentTarget.value)}
+              className={styles.input}
               size="large"
-              variant="contained"
+              placeholder="Email"
+            />
+            <Input
+              value={registrationPassword}
+              onChange={(e) => setRegistrationPassword(e.currentTarget.value)}
+              className={styles.input}
+              size="large"
+              placeholder="Пароль"
+            />
+            <Button
+              onClick={handleRegistration}
+              color="submitButton"
+              size="large"
+              variant="contained3"
               className={styles.button}
             >
               Продолжить

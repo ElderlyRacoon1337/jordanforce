@@ -15,5 +15,6 @@ import { UsersModule } from 'src/users/users.module';
   ],
   controllers: [SneakersController],
   providers: [SneakersService],
+  exports: [SneakersService],
 })
 export class SneakersModule {}

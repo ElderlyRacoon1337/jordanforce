@@ -5,4 +5,14 @@ export const SneakersApi = (instance: AxiosInstance) => ({
     const { data } = await instance.get("sneakers");
     return data;
   },
+
+  async create(dto: any) {
+    const { data } = await instance.post("sneakers", dto);
+    return data;
+  },
+
+  async upload(formData: any) {
+    const { data } = await instance.post("sneakers/upload", formData);
+    return data;
+  },
 });

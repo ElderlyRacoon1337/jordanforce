@@ -4,9 +4,9 @@ import { GetServerSideProps } from "next";
 
 export default function Home({ sneakers }: any) {
   return (
-    <>
+    <div style={{ minHeight: "calc(100vh - 50px)" }}>
       <Items sneakers={sneakers} />
-    </>
+    </div>
   );
 }
 

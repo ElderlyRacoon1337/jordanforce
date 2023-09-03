@@ -20,30 +20,30 @@ export class OrdersController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Request() req, @Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(req.cookies.user.sub, createOrderDto);
+    return this.ordersService.create(req.cookies.access_token, createOrderDto);
   }
 
   @UseGuards(AuthGuard)
   @Get()
   findAll(@Request() req) {
-    return this.ordersService.findAll(req.cookies.user.sub);
+    return this.ordersService.findAll(req.cookies.access_token);
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Request() req, @Param('id') id: string) {
-    return this.ordersService.findOne(req.cookies.user.sub, id);
+    return this.ordersService.findOne(req.cookies.access_token, id);
   }
 
   @UseGuards(AuthGuard)
   @Get('user/:id')
   findOrdersByUser(@Request() req, @Param('id') id: string) {
-    return this.ordersService.findOrdersByUser(req.cookies.user.sub, id);
+    return this.ordersService.findOrdersByUser(req.cookies.access_token, id);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Request() req, @Param('id') id: string) {
-    return this.ordersService.remove(req.cookies.user.sub, id);
+    return this.ordersService.remove(req.cookies.access_token, id);
   }
 }

@@ -16,8 +16,11 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
+    "next-redux-wrapper": "^8.1.0",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^8.1.2",
     "react-stickynode": "^4.1.0",
     "sass": "^1.66.1",
     "typescript": "5.1.6"

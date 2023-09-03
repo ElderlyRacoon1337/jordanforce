@@ -1,10 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { Request, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { jwtDecode } from './jwt.decode';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async signIn(res: Response, email: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
@@ -13,9 +18,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
     const payload = { sub: user._id };
+    const token = this.jwtService.sign(payload);
     res
-      .cookie('user', payload, {
-        expires: new Date(Date.now() + 3600000),
+      .cookie('access_token', token, {
+        maxAge: 9000000000,
       })
       .json(user);
   }
@@ -35,16 +41,18 @@ export class AuthService {
       return;
     }
     const payload = { sub: createdUser._id };
+    const token = this.jwtService.sign(payload);
     res
-      .cookie('user', payload, {
-        expires: new Date(Date.now() + 3600000),
+      .cookie('access_token', token, {
+        maxAge: 9000000000,
       })
       .json(createdUser);
   }
 
   async getProfile(req: Request): Promise<any> {
-    const id = req.cookies.user.sub;
+    const token = req.cookies.access_token;
+    const id = jwtDecode(token);
     const userData = await this.usersService.findOne(id);
-    return { userData };
+    return userData;
   }
 }
