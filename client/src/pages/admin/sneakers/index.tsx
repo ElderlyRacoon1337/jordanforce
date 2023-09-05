@@ -14,7 +14,7 @@ export default function Sneakers({ sneakers }: any) {
             <AdminMenu activeIndex={2} />
           </div>
           <div className={`${styles.rightSide} ${styles.sneakers}`}>
-            {sneakers.map((el, i) => {
+            {sneakers.map((el: any, i: number) => {
               return (
                 <div className={styles.sneakersItem}>
                   <figure style={{ backgroundImage: `url(${el.imageUrl})` }} />

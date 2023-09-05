@@ -21,9 +21,12 @@ const themeOptions = {
   },
   darkMode: {
     // primary: "#b661ff",
-    primary: "#d3a1ff",
+    // primary: "#d3a1ff",
+    // primary: "#376CA4",
+    primary: "#E9C6EC",
     bgTransparent: "rgba(0, 0, 0, 0.9)",
     submitButton: "#252525",
+    success: "#7DD48E",
   },
 };
 

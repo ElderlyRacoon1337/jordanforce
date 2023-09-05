@@ -15,6 +15,9 @@ export class Order {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: mongoose.Schema.Types.ObjectId;
+
+  @Prop()
+  status: 'notpaid' | 'paid' | 'indelivery' | 'delivered';
 }
 
 export const OrdersSchema = SchemaFactory.createForClass(Order);

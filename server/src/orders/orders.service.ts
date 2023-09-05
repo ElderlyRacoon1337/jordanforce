@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 import { Order } from './schemas/order.schema';
 import { jwtDecode } from 'src/auth/jwt.decode';
 import { SneakersService } from 'src/sneakers/sneakers.service';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -71,5 +72,17 @@ export class OrdersService {
 
     await this.ordersModel.findByIdAndDelete(id);
     return { message: 'Order successfully deleted' };
+  }
+
+  async update(token: string, id: string, updateOrderDto: UpdateOrderDto) {
+    const userId = jwtDecode(token);
+    const user = await this.usersService.findOne(userId);
+    if (!user.isAdmin) throw new ForbiddenException('No access');
+
+    const updatedOrder = await this.ordersModel.findByIdAndUpdate(
+      id,
+      updateOrderDto,
+    );
+    return updatedOrder;
   }
 }

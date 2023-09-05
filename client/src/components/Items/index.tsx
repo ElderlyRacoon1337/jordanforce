@@ -12,6 +12,15 @@ export const Items = ({ sneakers }: any) => {
   const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorEl(e.currentTarget);
   };
+
+  const [ancorElSort, setAnchorElSort] = useState<HTMLElement | null>(null);
+  const openSort = Boolean(ancorElSort);
+  const handleCloseSort = () => {
+    setAnchorElSort(null);
+  };
+  const handleClickSort = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setAnchorElSort(e.currentTarget);
+  };
   if (!sneakers) return;
 
   return (
@@ -36,6 +45,19 @@ export const Items = ({ sneakers }: any) => {
             </MenuItem>
             <MenuItem onClick={handleClose}>Все</MenuItem>
           </Menu>
+          <Menu
+            className={styles.menu_el}
+            fullWidth
+            open={openSort}
+            anchorEl={ancorElSort}
+            onClose={handleCloseSort}
+          >
+            <MenuItem onClick={handleCloseSort}>Релевантности</MenuItem>
+            <MenuItem onClick={handleCloseSort}>Популярности</MenuItem>
+            <MenuItem onClick={handleCloseSort}>Возростанию цены</MenuItem>
+            <MenuItem onClick={handleCloseSort}>Убыванию цены</MenuItem>
+          </Menu>
+          <p>Модель:</p>
           <Button
             variant="contained"
             color="#2b2b2b"
@@ -43,6 +65,15 @@ export const Items = ({ sneakers }: any) => {
             onClick={handleClick}
           >
             Все
+          </Button>
+          <p>Сортировка по:</p>
+          <Button
+            variant="contained"
+            color="#2b2b2b"
+            className={styles.button}
+            onClick={handleClickSort}
+          >
+            Релевантности
           </Button>
         </div>
         <div className={styles.items}>

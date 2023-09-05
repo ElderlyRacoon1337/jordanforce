@@ -30,7 +30,7 @@ export default function Orders({ orders }: any) {
                     <div>{el.user.email}</div>
                     <div className={styles.orderItemsImages}>
                       {el.sneakers.length <= 3 ? (
-                        el.sneakers.map((item) => {
+                        el.sneakers.map((item: any) => {
                           return (
                             <figure
                               className={styles.orderItemsImg}
@@ -42,7 +42,7 @@ export default function Orders({ orders }: any) {
                         })
                       ) : (
                         <>
-                          {el.sneakers.slice(0, 2).map((item) => {
+                          {el.sneakers.slice(0, 2).map((item: any) => {
                             return (
                               <figure
                                 className={styles.orderItemsImg}

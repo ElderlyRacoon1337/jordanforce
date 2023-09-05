@@ -12,6 +12,7 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -45,5 +46,19 @@ export class OrdersController {
   @Delete(':id')
   remove(@Request() req, @Param('id') id: string) {
     return this.ordersService.remove(req.cookies.access_token, id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  update(
+    @Request() req,
+    @Param('id') id: string,
+    updateOrderDto: UpdateOrderDto,
+  ) {
+    return this.ordersService.update(
+      req.cookies.access_token,
+      id,
+      updateOrderDto,
+    );
   }
 }

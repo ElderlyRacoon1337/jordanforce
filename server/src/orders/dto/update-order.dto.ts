@@ -1,4 +1,4 @@
-export class CreateOrderDto {
-  sneakers: string[];
+export class UpdateOrderDto {
+  sneakers?: string[];
   status?: 'notpaid' | 'paid' | 'indelivery' | 'delivered';
 }
