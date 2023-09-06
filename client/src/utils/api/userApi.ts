@@ -25,4 +25,9 @@ export const UserApi = (instance: AxiosInstance) => ({
     const { data } = await instance.get(`users/${id}`);
     return data;
   },
+
+  async deleteUser(id: number) {
+    const { data } = await instance.delete(`users/${id}`);
+    return data;
+  },
 });

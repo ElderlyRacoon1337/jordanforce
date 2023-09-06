@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Admin.module.scss";
 import { AdminMenu } from "@/components/AdminMenu";
 import { GetServerSideProps } from "next";
 import { Api } from "@/utils/api";
-import { Icon, IconButton } from "cutie-ui";
+import { Alert, Icon, IconButton } from "cutie-ui";
+import { AreYouSure } from "@/components/AreYouSure";
 
 export default function Users({ users }: any) {
+  const [open, setOpen] = useState(false);
+  const [sure, setSure] = useState(false);
+  const userId = useRef(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+
   if (!users) {
     return;
   }
+
+  useEffect(() => {
+    if (sure) {
+      try {
+        Api().user.deleteUser(userId.current);
+        setSure(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [sure]);
+
+  const handleClickDelete = () => {
+    setOpen(true);
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.container}>
@@ -31,7 +53,13 @@ export default function Users({ users }: any) {
                     <div>{el.email}</div>
                     <div>{new Date(el.createdAt).toLocaleDateString("ru")}</div>
                     <div>
-                      <IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleClickDelete();
+                          userId.current = el._id;
+                        }}
+                        color="error"
+                      >
                         <Icon>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -54,6 +82,18 @@ export default function Users({ users }: any) {
                 );
               })}
             </>
+            {open && (
+              <AreYouSure setSure={setSure} email={"hello"} setOpen={setOpen} />
+            )}
+            <Alert
+              open={alertOpen}
+              onClose={() => {
+                setAlertOpen(false);
+              }}
+              color="success"
+            >
+              Пользователь удален
+            </Alert>
           </div>
         </div>
       </div>

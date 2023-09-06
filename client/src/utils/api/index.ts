@@ -22,6 +22,8 @@ export const Api = (
     headers: {
       Authorization: "Bearer " + access_token,
       Cookie: `access_token=${access_token};`,
+
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
     },
     withCredentials: true,
   });

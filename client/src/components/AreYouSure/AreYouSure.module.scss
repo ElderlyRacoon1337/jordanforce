@@ -1,0 +1,41 @@
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #0000002c;
+  display: flex;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+.popupEl {
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 30px;
+  width: fit-content;
+  height: fit-content;
+  background-color: var(--backgroundSecondary);
+  display: flex;
+  flex-direction: column;
+  z-index: 19;
+  max-width: 300px;
+  p {
+    font-size: 1.1rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  //   justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+
+  .button {
+    margin-right: 10px;
+  }
+}
