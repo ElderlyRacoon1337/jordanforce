@@ -7,18 +7,19 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFile,
   UseGuards,
   Request,
   Response,
+  UploadedFiles,
 } from '@nestjs/common';
 import { SneakersService } from './sneakers.service';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
 import { UpdateSneakerDto } from './dto/update-sneaker.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { editFileName, imageFileFilter } from './utils/utils';
 
 let fileName = '';
 
@@ -35,21 +36,19 @@ export class SneakersController {
   @UseGuards(AuthGuard)
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FilesInterceptor('images', 10, {
       storage: diskStorage({
         destination: './images',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e3);
-          const ext = extname(file.originalname);
-          fileName = `jordanforce-image-${uniqueSuffix}${ext}`;
-          callback(null, fileName);
-        },
+        filename: editFileName,
       }),
+      fileFilter: imageFileFilter,
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return { url: `/${fileName}` };
+  uploadFile(@UploadedFiles() files) {
+    const fileUrls = files.map((file: { filename: string }) => {
+      return join('images', file.filename);
+    });
+    return { message: 'Images uploaded successfully', images: fileUrls };
   }
 
   @Get('images')

@@ -1,7 +1,7 @@
 export class CreateSneakerDto {
   title: string;
   price: number;
-  imageUrl: string;
+  images: string[];
   sizes: number[];
   isAvailable?: boolean;
   model: string;

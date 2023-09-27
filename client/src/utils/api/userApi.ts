@@ -26,7 +26,7 @@ export const UserApi = (instance: AxiosInstance) => ({
     return data;
   },
 
-  async deleteUser(id: number) {
+  async deleteUser(id: string) {
     const { data } = await instance.delete(`users/${id}`);
     return data;
   },

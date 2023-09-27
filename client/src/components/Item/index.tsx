@@ -1,12 +1,17 @@
 import React from "react";
 import styles from "./Item.module.scss";
 
-export const Item = ({ title, image }: any) => {
+interface ItemProps {
+  title: string;
+  images: string[];
+}
+
+export const Item: React.FC<ItemProps> = ({ title, images }) => {
   return (
     <div className={styles.root}>
       <figure
         className={styles.image}
-        style={{ backgroundImage: `url('${image}')` }}
+        style={{ backgroundImage: `url('http://localhost:3003/${images[0]}')` }}
       />
       <h5 className={styles.title}>{title}</h5>
       <p className={styles.price}>от 25 000 руб.</p>

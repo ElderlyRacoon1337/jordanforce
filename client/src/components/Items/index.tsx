@@ -4,6 +4,9 @@ import { Item } from "../Item";
 import { Button, Menu, MenuItem } from "cutie-ui";
 
 export const Items = ({ sneakers }: any) => {
+  const [model, setModel] = useState("Все");
+  const [sortBy, setSortBy] = useState("Релевантности");
+
   const [ancorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(ancorEl);
   const handleClose = () => {
@@ -34,16 +37,71 @@ export const Items = ({ sneakers }: any) => {
             anchorEl={ancorEl}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Nike Jordan 4 low</MenuItem>
-            <MenuItem onClick={handleClose}>Nike Jordan 4 mid</MenuItem>
-            <MenuItem onClick={handleClose}>Nike Jordan 4 high</MenuItem>
-            <MenuItem onClick={handleClose}>Nike Jordan 1 low</MenuItem>
-            <MenuItem onClick={handleClose}>Nike Jordan 1 mid</MenuItem>
-            <MenuItem onClick={handleClose}>Nike Jordan 1 high</MenuItem>
-            <MenuItem divider onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 4 low");
+              }}
+            >
+              Nike Jordan 4 low
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 4 mid");
+              }}
+            >
+              Nike Jordan 4 mid
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 4 high");
+              }}
+            >
+              Nike Jordan 4 high
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 1 low");
+              }}
+            >
+              Nike Jordan 1 low
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 1 mid");
+              }}
+            >
+              Nike Jordan 1 mid
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Jordan 1 high");
+              }}
+            >
+              Nike Jordan 1 high
+            </MenuItem>
+            <MenuItem
+              divider
+              onClick={() => {
+                handleClose();
+                setModel("Nike Air Force 1");
+              }}
+            >
               Nike Air Force 1
             </MenuItem>
-            <MenuItem onClick={handleClose}>Все</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Все");
+              }}
+            >
+              Все
+            </MenuItem>
           </Menu>
           <Menu
             className={styles.menu_el}
@@ -52,33 +110,61 @@ export const Items = ({ sneakers }: any) => {
             anchorEl={ancorElSort}
             onClose={handleCloseSort}
           >
-            <MenuItem onClick={handleCloseSort}>Релевантности</MenuItem>
-            <MenuItem onClick={handleCloseSort}>Популярности</MenuItem>
-            <MenuItem onClick={handleCloseSort}>Возростанию цены</MenuItem>
-            <MenuItem onClick={handleCloseSort}>Убыванию цены</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseSort();
+                setSortBy("Релевантности");
+              }}
+            >
+              Релевантности
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseSort();
+                setSortBy("Популярности");
+              }}
+            >
+              Популярности
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseSort();
+                setSortBy("Возростанию цены");
+              }}
+            >
+              Возростанию цены
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseSort();
+                setSortBy("Убыванию цены");
+              }}
+            >
+              Убыванию цены
+            </MenuItem>
           </Menu>
           <p>Модель:</p>
           <Button
-            variant="contained"
-            color="#2b2b2b"
+            variant="outlined"
+            color="textPrimary"
             className={styles.button}
             onClick={handleClick}
           >
-            Все
+            {model}
           </Button>
           <p>Сортировка по:</p>
           <Button
-            variant="contained"
-            color="#2b2b2b"
+            variant="outlined"
+            color="textPrimary"
             className={styles.button}
             onClick={handleClickSort}
           >
-            Релевантности
+            {sortBy}
           </Button>
         </div>
         <div className={styles.items}>
-          {sneakers.map((el, i) => {
-            return <Item key={i} title={el.title} image={el.imageUrl} />;
+          {sneakers.map((el: any, i: number) => {
+            return <Item key={i} title={el.title} images={el.images} />;
           })}
         </div>
       </div>

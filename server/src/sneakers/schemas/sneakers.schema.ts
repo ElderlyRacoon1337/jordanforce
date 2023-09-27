@@ -3,6 +3,11 @@ import mongoose, { HydratedDocument } from 'mongoose';
 
 export type SneakersDocument = HydratedDocument<Sneakers>;
 
+interface Size {
+  size: number;
+  price: number;
+}
+
 @Schema({ timestamps: true })
 export class Sneakers {
   _id: mongoose.Schema.Types.ObjectId;
@@ -14,10 +19,10 @@ export class Sneakers {
   price: number;
 
   @Prop({ required: true })
-  imageUrl: string;
+  images: string[];
 
   @Prop({ required: true })
-  sizes: number[];
+  sizes: Size[];
 
   @Prop({ required: false, default: false })
   isAvailable?: boolean;

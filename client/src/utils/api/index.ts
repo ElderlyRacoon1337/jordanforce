@@ -5,6 +5,8 @@ import { SneakersApi } from "./sneakersApi";
 import Cookies, { parseCookies } from "nookies";
 import { OrderApi } from "./orderApi";
 
+axios.defaults.withCredentials = true;
+
 export type ApiReturnType = {
   user: ReturnType<typeof UserApi>;
   sneakers: ReturnType<typeof SneakersApi>;
@@ -22,9 +24,8 @@ export const Api = (
     headers: {
       Authorization: "Bearer " + access_token,
       Cookie: `access_token=${access_token};`,
-
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
     },
+    method: "GET, POST, PUT, DELETE",
     withCredentials: true,
   });
 

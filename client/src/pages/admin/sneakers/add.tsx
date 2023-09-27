@@ -19,7 +19,7 @@ export default function AddSneakers() {
   const [sizes, setSizes] = useState("");
   const [isAvailable, setIsAvailable] = useState(false);
   const [model, setModel] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [images, setImages] = useState([]);
 
   const [submitStatus, setSubmitStatus] = useState("");
 
@@ -38,12 +38,16 @@ export default function AddSneakers() {
   const handleChangeFile = async (event: any) => {
     try {
       const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append("file", file);
+      if (event.target.files) {
+        const files: any[] = Array.from(event.target.files);
+        files.forEach((image, index) => {
+          formData.append(`images`, image);
+        });
+      }
       const data = await Api().sneakers.upload(formData);
       if (data) {
         setAlertOpen(true);
-        setImageUrl(`http://localhost:3003${data.url}`);
+        setImages(data.images);
       }
     } catch (error) {
       console.log(error);
@@ -56,9 +60,14 @@ export default function AddSneakers() {
       Api().sneakers.create({
         title,
         price,
-        sizes: sizes.replace(/ /g, "").split(","),
+        sizes: sizes
+          .replace(/ /g, "")
+          .split(",")
+          .map((el) => {
+            return { size: +el.split("-")[0], price: +el.split("-")[1] };
+          }),
         isAvailable,
-        imageUrl,
+        images,
         model,
       });
       setSubmitStatus("success");
@@ -113,6 +122,7 @@ export default function AddSneakers() {
                 size="large"
                 variant="outlined"
                 className={styles.button}
+                // @ts-ignore
                 onClick={() => inputFileRef.current.click()}
                 startIcon={
                   <Icon>
@@ -139,7 +149,10 @@ export default function AddSneakers() {
                 onChange={handleChangeFile}
                 type="file"
                 hidden
+                accept="image/*"
+                multiple
                 ref={inputFileRef}
+                name="images"
               />
               <Button
                 className={styles.button}

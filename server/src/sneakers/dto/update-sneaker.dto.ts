@@ -7,5 +7,5 @@ export class UpdateSneakerDto extends PartialType(CreateSneakerDto) {
   sizes?: number[];
   model?: string;
   isAvailable?: boolean;
-  imageUrl?: string;
+  images?: string[];
 }

@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { Api } from "@/utils/api";
 import { Alert, Icon, IconButton } from "cutie-ui";
 import { AreYouSure } from "@/components/AreYouSure";
+import axios from "axios";
 
 export default function Users({ users }: any) {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,8 @@ export default function Users({ users }: any) {
         Api().user.deleteUser(userId.current);
         setSure(false);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
+        setSure(false);
       }
     }
   }, [sure]);
@@ -83,7 +85,11 @@ export default function Users({ users }: any) {
               })}
             </>
             {open && (
-              <AreYouSure setSure={setSure} email={"hello"} setOpen={setOpen} />
+              <AreYouSure
+                setSure={setSure}
+                email={userId.current}
+                setOpen={setOpen}
+              />
             )}
             <Alert
               open={alertOpen}
