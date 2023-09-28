@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import userReducer from "./slices/userSlice";
+import cartReducer from "./slices/cartSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
+      cart: cartReducer,
     },
   });
 };

@@ -1,0 +1,51 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.img {
+  width: 200px;
+  height: 140px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.titles {
+  max-width: 200px;
+  .title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+  }
+  .model {
+    color: var(--textSecondary);
+  }
+}
+
+.prices {
+  max-width: 200px;
+  .price {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  .delivery {
+    color: var(--textSecondary);
+  }
+}
+
+.sizequant {
+  span {
+    font-size: 1.1rem;
+  }
+  .size {
+    margin-bottom: 10px;
+  }
+  .quantity {
+  }
+}
+
+.delete {
+  align-self: flex-start;
+}

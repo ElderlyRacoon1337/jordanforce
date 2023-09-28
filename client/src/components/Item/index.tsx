@@ -11,14 +11,6 @@ interface ItemProps {
 }
 
 export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
-  const [ruPrice, setRuPrice] = useState(0);
-  useEffect(() => {
-    (async () => {
-      const result = await countPrice(price);
-      setRuPrice(result);
-    })();
-  }, []);
-
   return (
     <Link href={"/sneakers/" + id}>
       <div className={styles.root}>
@@ -29,7 +21,7 @@ export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
           }}
         />
         <h5 className={styles.title}>{title}</h5>
-        <p className={styles.price}>от {ruPrice} руб.</p>
+        <p className={styles.price}>от {price} руб.</p>
 
         {/* <IconButton color="red" className={styles.like}>
         <Icon>

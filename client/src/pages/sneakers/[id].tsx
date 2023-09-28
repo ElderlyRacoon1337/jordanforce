@@ -5,6 +5,8 @@ import styles from "./Sneakers.module.scss";
 import { Button } from "cutie-ui";
 import { countPrice } from "@/utils/countPrice";
 import { Size } from "@/components/Size";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/redux/slices/cartSlice";
 
 interface Sneaker {
   _id: string;
@@ -24,6 +26,23 @@ interface SneakersProps {
 }
 
 const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
+  const [selectedSize, setSelectedSize] = useState(0);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    try {
+      dispatch(
+        addItem({
+          ...data,
+          price: sizes.find((el: any) => el.size == selectedSize).price,
+          size: selectedSize,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.root}>
       <div className="container">
@@ -48,12 +67,19 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
             <p className={styles.price}>от ₽{ruPrice}</p>
             <p className={styles.delivery}>Доставка включена в стоимость</p>
             <div className={styles.sizes}>
-              {sizes.map((el, i) => (
-                <Size size={el.size} i={i} price={el.price} />
+              {sizes.map((el: any, i: number) => (
+                <Size
+                  selectedSize={selectedSize}
+                  setSelectedSize={setSelectedSize}
+                  size={el.size}
+                  i={i}
+                  price={el.price}
+                />
               ))}
             </div>
             <div className={styles.buttons}>
               <Button
+                onClick={handleAddToCart}
                 className={styles.button}
                 variant="contained2"
                 color="textPrimary"
