@@ -1,0 +1,24 @@
+.size {
+  cursor: pointer;
+  min-width: 79px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1.5px solid var(--divider);
+  margin-right: 15px;
+  margin-bottom: 10px;
+
+  &:hover {
+    border-color: var(--textSecondary);
+  }
+
+  .sizeSize {
+    margin-bottom: 5px;
+  }
+  .sizePrice {
+    color: var(--textSecondary);
+  }
+}

@@ -1,8 +1,10 @@
 import { Api } from "@/utils/api";
 import { NextPage, NextPageContext } from "next";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Sneakers.module.scss";
-import { Button, Icon, IconButton } from "cutie-ui";
+import { Button } from "cutie-ui";
+import { countPrice } from "@/utils/countPrice";
+import { Size } from "@/components/Size";
 
 interface Sneaker {
   _id: string;
@@ -17,9 +19,11 @@ interface Sneaker {
 
 interface SneakersProps {
   data: Sneaker;
+  ruPrice: number;
+  sizes: any;
 }
 
-const sneakers: NextPage<SneakersProps> = ({ data }) => {
+const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
   return (
     <div className={styles.root}>
       <div className="container">
@@ -41,14 +45,11 @@ const sneakers: NextPage<SneakersProps> = ({ data }) => {
               <span>Модель: </span>
               {data.model}
             </p>
-            <p className={styles.price}>от ₽{data.price}</p>
+            <p className={styles.price}>от ₽{ruPrice}</p>
             <p className={styles.delivery}>Доставка включена в стоимость</p>
             <div className={styles.sizes}>
-              {data.sizes.map((el, i) => (
-                <div className={styles.size} key={i}>
-                  <p className={styles.sizeSize}>{el.size}</p>
-                  <p className={styles.sizePrice}>₽{el.price}</p>
-                </div>
+              {sizes.map((el, i) => (
+                <Size size={el.size} i={i} price={el.price} />
               ))}
             </div>
             <div className={styles.buttons}>
@@ -96,7 +97,16 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const { id } = ctx.query;
   try {
     const data = await Api().sneakers.getOne(id as string);
-    return { props: { data } };
+
+    const ruPrice = await countPrice(data.price);
+    const sizes = await Promise.all(
+      data.sizes.map(async (el: any) => {
+        const price = await countPrice(el.price);
+        return { ...el, price };
+      })
+    );
+
+    return { props: { data, ruPrice, sizes } };
   } catch (error) {
     console.log(error);
     return { props: {} };

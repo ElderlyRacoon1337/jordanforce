@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Item.module.scss";
 import Link from "next/link";
+import { countPrice } from "@/utils/countPrice";
 
 interface ItemProps {
   title: string;
   images: string[];
   id: string;
+  price: number;
 }
 
-export const Item: React.FC<ItemProps> = ({ title, images, id }) => {
+export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
+  const [ruPrice, setRuPrice] = useState(0);
+  useEffect(() => {
+    (async () => {
+      const result = await countPrice(price);
+      setRuPrice(result);
+    })();
+  }, []);
+
   return (
     <Link href={"/sneakers/" + id}>
       <div className={styles.root}>
@@ -19,7 +29,7 @@ export const Item: React.FC<ItemProps> = ({ title, images, id }) => {
           }}
         />
         <h5 className={styles.title}>{title}</h5>
-        <p className={styles.price}>от 25 000 руб.</p>
+        <p className={styles.price}>от {ruPrice} руб.</p>
 
         {/* <IconButton color="red" className={styles.like}>
         <Icon>
