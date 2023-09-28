@@ -164,7 +164,9 @@ export const Items = ({ sneakers }: any) => {
         </div>
         <div className={styles.items}>
           {sneakers.map((el: any, i: number) => {
-            return <Item key={i} title={el.title} images={el.images} />;
+            return (
+              <Item key={i} title={el.title} images={el.images} id={el._id} />
+            );
           })}
         </div>
       </div>

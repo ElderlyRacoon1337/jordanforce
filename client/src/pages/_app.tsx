@@ -35,7 +35,7 @@ function App({ Component, pageProps }: AppProps) {
     <ThemeProvider themeOptions={themeOptions}>
       <CssBaseline />
       {/* <TopBar /> */}
-      <Sticky innerZ={1}>
+      <Sticky innerZ={10}>
         <Header />
       </Sticky>
       <Component {...pageProps} />

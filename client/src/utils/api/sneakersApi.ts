@@ -6,6 +6,11 @@ export const SneakersApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async getOne(id: string) {
+    const { data } = await instance.get("sneakers/" + id);
+    return data;
+  },
+
   async create(dto: any) {
     const { data } = await instance.post("sneakers", dto);
     return data;

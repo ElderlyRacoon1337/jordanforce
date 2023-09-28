@@ -1,22 +1,27 @@
 import React from "react";
 import styles from "./Item.module.scss";
+import Link from "next/link";
 
 interface ItemProps {
   title: string;
   images: string[];
+  id: string;
 }
 
-export const Item: React.FC<ItemProps> = ({ title, images }) => {
+export const Item: React.FC<ItemProps> = ({ title, images, id }) => {
   return (
-    <div className={styles.root}>
-      <figure
-        className={styles.image}
-        style={{ backgroundImage: `url('http://localhost:3003/${images[0]}')` }}
-      />
-      <h5 className={styles.title}>{title}</h5>
-      <p className={styles.price}>от 25 000 руб.</p>
+    <Link href={"/sneakers/" + id}>
+      <div className={styles.root}>
+        <figure
+          className={styles.image}
+          style={{
+            backgroundImage: `url('http://localhost:3003/${images[0]}')`,
+          }}
+        />
+        <h5 className={styles.title}>{title}</h5>
+        <p className={styles.price}>от 25 000 руб.</p>
 
-      {/* <IconButton color="red" className={styles.like}>
+        {/* <IconButton color="red" className={styles.like}>
         <Icon>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +39,7 @@ export const Item: React.FC<ItemProps> = ({ title, images }) => {
           </svg>
         </Icon>
       </IconButton> */}
-    </div>
+      </div>
+    </Link>
   );
 };
