@@ -122,6 +122,7 @@ export default function AddSneakers() {
                 size="large"
                 variant="outlined"
                 className={styles.button}
+                color="textPrimary"
                 // @ts-ignore
                 onClick={() => inputFileRef.current.click()}
                 startIcon={
@@ -156,6 +157,7 @@ export default function AddSneakers() {
               />
               <Button
                 className={styles.button}
+                color="textPrimary"
                 endIcon={
                   submitStatus == "loading" && (
                     <Loader

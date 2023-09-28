@@ -11,6 +11,7 @@ import {
   setLoadingStatus,
   setUserData,
 } from "@/redux/slices/userSlice";
+import { TopBar } from "@/components/TopBar";
 
 const themeOptions = {
   colors: {
@@ -34,7 +35,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider themeOptions={themeOptions}>
       <CssBaseline />
-      {/* <TopBar /> */}
+      <TopBar />
       <Sticky innerZ={10}>
         <Header />
       </Sticky>

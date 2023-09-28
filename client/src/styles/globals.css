@@ -24,7 +24,3 @@ a {
 li {
   list-style: none;
 }
-
-.swiper-button-prev::after,.swiper-button-next::after{
-  color: var(--primary);
-}
