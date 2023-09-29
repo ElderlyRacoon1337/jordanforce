@@ -5,7 +5,7 @@ import styles from "./Sneakers.module.scss";
 import { Button } from "cutie-ui";
 import { countPrice } from "@/utils/countPrice";
 import { Size } from "@/components/Size";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 
 interface Sneaker {
@@ -28,16 +28,18 @@ interface SneakersProps {
 const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const dispatch = useDispatch();
+  const cartItems = useSelector((store) => store.cart.data);
 
   const handleAddToCart = () => {
     try {
-      dispatch(
-        addItem({
-          ...data,
-          price: sizes.find((el: any) => el.size == selectedSize).price,
-          size: selectedSize,
-        })
-      );
+      const newItem = {
+        ...data,
+        price: sizes.find((el: any) => el.size == selectedSize).price,
+        size: selectedSize,
+        id: cartItems.length + 1,
+      };
+      dispatch(addItem(newItem));
+      localStorage.setItem("cart", JSON.stringify([newItem, ...cartItems]));
     } catch (error) {
       console.log(error);
     }

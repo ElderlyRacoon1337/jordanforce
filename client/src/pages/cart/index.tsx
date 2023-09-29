@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Cart.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "@/components/CartItem";
 import { Button, Input } from "cutie-ui";
 import clsx from "clsx";
+import { setItems } from "@/redux/slices/cartSlice";
 
 export default function cart() {
   const { data, total } = useSelector((state) => state.cart);
   const [discount, setDiscount] = useState(0);
+  const dispatch = useDispatch();
+  const localData = [...data];
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("cart"));
+    if (cartItems) {
+      dispatch(setItems(cartItems));
+    }
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -17,9 +27,13 @@ export default function cart() {
             <h1 className={styles.title}>Корзина</h1>
             <div className={styles.cartItems}>
               {data &&
-                data.map((el: any) => {
-                  return <CartItem data={el} />;
-                })}
+                localData
+                  .sort((a, b) => {
+                    return b.id - a.id;
+                  })
+                  .map((el: any) => {
+                    return <CartItem data={el} />;
+                  })}
             </div>
           </div>
           <div className={styles.cartRight}>

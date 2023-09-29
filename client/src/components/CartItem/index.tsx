@@ -1,8 +1,25 @@
 import React from "react";
 import styles from "./CartItem.module.scss";
 import { Icon, IconButton } from "cutie-ui";
+import { useDispatch } from "react-redux";
+import { removeItem } from "@/redux/slices/cartSlice";
 
 export const CartItem = ({ data }: any) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(removeItem(data.id));
+    const localStorageItems = localStorage.getItem("cart");
+    if (localStorageItems) {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(
+          JSON.parse(localStorageItems).filter((el) => el.id !== data.id)
+        )
+      );
+    }
+  };
+
   return (
     <div className={styles.root}>
       <figure
@@ -28,7 +45,7 @@ export const CartItem = ({ data }: any) => {
         </p>
       </div>
       <div className={styles.delete}>
-        <IconButton color="textPrimary">
+        <IconButton onClick={handleDelete} color="textPrimary">
           <Icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
