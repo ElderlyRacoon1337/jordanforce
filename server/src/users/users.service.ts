@@ -1,6 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
@@ -23,7 +22,12 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(token: string): Promise<User[]> {
+    const userId = jwtDecode(token);
+    const user = await this.userModel.findById(userId);
+    if (!user.isAdmin) {
+      throw new ForbiddenException("You don't have permission to do this");
+    }
     return this.userModel.find().exec();
   }
 

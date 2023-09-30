@@ -12,11 +12,16 @@ import {
   setUserData,
 } from "@/redux/slices/userSlice";
 import { TopBar } from "@/components/TopBar";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setItems } from "@/redux/slices/cartSlice";
 
 const themeOptions = {
   colors: {
-    primary: "#4A246B",
-    secondary: "#CFC6EC",
+    primary: "#9b8dcc",
+    // secondary: "#CFC6EC",
+    secondary: "#9b8dcc",
+
     bgTransparent: "rgba(255, 255, 255, 0.9)",
     submitButton: "#000",
   },
@@ -32,6 +37,25 @@ const themeOptions = {
 };
 
 function App({ Component, pageProps }: AppProps) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("cart"));
+    if (cartItems) {
+      dispatch(setItems(cartItems));
+    }
+
+    dispatch(setLoadingStatus(LoadingStatus.LOADING));
+    (async function anonym() {
+      try {
+        const data = await Api().user.getMe();
+        dispatch(setUserData(data));
+        dispatch(setLoadingStatus(LoadingStatus.LOADED));
+      } catch (error) {
+        dispatch(setLoadingStatus(LoadingStatus.ERROR));
+      }
+    })();
+  }, []);
   return (
     <ThemeProvider themeOptions={themeOptions}>
       <CssBaseline />
@@ -48,20 +72,6 @@ function App({ Component, pageProps }: AppProps) {
 App.getInitialProps = wrapper.getInitialAppProps(
   (store): any =>
     async ({ ctx, Component }: any) => {
-      store.dispatch(setLoadingStatus(LoadingStatus.LOADING));
-      try {
-        const data = await Api(ctx).user.getMe();
-        store.dispatch(setUserData(data));
-        store.dispatch(setLoadingStatus(LoadingStatus.LOADED));
-      } catch (error) {
-        store.dispatch(setLoadingStatus(LoadingStatus.ERROR));
-        if (ctx.asPath === "/write") {
-          ctx.res.writeHead(302, {
-            Location: "/403",
-          });
-          ctx.res.end();
-        }
-      }
       return {
         pageProps: Component.getInitialProps
           ? await Component.getInitialProps({ ...ctx, store })

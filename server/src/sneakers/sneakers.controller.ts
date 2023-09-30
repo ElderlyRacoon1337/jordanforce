@@ -29,8 +29,11 @@ export class SneakersController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createSneakerDto: CreateSneakerDto) {
-    return this.sneakersService.create(createSneakerDto);
+  create(@Request() req, @Body() createSneakerDto: CreateSneakerDto) {
+    return this.sneakersService.create(
+      req.cookies.access_token,
+      createSneakerDto,
+    );
   }
 
   @UseGuards(AuthGuard)

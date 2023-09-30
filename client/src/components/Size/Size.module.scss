@@ -1,4 +1,5 @@
 .size {
+  position: relative;
   cursor: pointer;
   min-width: 79px;
   height: 60px;
@@ -25,4 +26,46 @@
 
 .sizeActive {
   border-color: var(--textPrimary);
+}
+.inCart {
+  border-color: var(--secondary) !important;
+  background-color: var(--secondary);
+  .sizeSize {
+    color: var(--textOpposite);
+  }
+  .sizePrice {
+    color: var(--textOpposite);
+  }
+  svg {
+    color: white !important;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  animation: bounce 3s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  5% {
+    transform: rotate(20deg);
+  }
+  10% {
+    transform: rotate(-20deg);
+  }
+  15% {
+    transform: rotate(20deg);
+  }
+  20% {
+    transform: rotate(-20deg);
+  }
+  25% {
+    transform: rotate(0);
+  }
 }

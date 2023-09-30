@@ -22,6 +22,7 @@ export class OrdersService {
     if (!user) return;
     const createdOrder = new this.ordersModel({
       sneakers: createOrderDto.sneakers,
+      status: createOrderDto.status,
       user: userId,
     });
     return createdOrder.save();

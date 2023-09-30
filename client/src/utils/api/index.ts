@@ -21,12 +21,11 @@ export const Api = (
 
   const instance = axios.create({
     baseURL: "http://localhost:3003",
+    withCredentials: true,
     headers: {
-      Authorization: "Bearer " + access_token,
+      // Authorization: "Bearer " + access_token,
       Cookie: `access_token=${access_token};`,
     },
-    method: "GET, POST, PUT, DELETE",
-    withCredentials: true,
   });
 
   return {
@@ -37,6 +36,7 @@ export const Api = (
 };
 
 const instance = axios.create({
+  withCredentials: true,
   baseURL: "http://localhost:3003",
 });
 

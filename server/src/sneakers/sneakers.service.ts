@@ -15,7 +15,12 @@ export class SneakersService {
     private usersService: UsersService,
   ) {}
 
-  create(createSneakerDto: CreateSneakerDto) {
+  async create(token: string, createSneakerDto: CreateSneakerDto) {
+    const userId = jwtDecode(token);
+    const user = await this.usersService.findOne(userId);
+    if (!user.isAdmin) {
+      throw new ForbiddenException("You don't have permission to do this");
+    }
     const sneakers = new this.sneakersModel(createSneakerDto);
     return sneakers.save();
   }

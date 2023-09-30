@@ -94,7 +94,7 @@ export const Header = () => {
                   </Icon>
                 </IconButton>
               </Link>
-              {user._id ? (
+              {user?._id ? (
                 <Link href={`/user/${user._id}`}>
                   <IconButton className={styles.iconButton} color="textPrimary">
                     <Icon>

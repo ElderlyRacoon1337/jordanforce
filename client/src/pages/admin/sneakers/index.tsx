@@ -3,6 +3,7 @@ import styles from "../Admin.module.scss";
 import { AdminMenu } from "@/components/AdminMenu";
 import { GetServerSideProps } from "next";
 import { Api } from "@/utils/api";
+import Link from "next/link";
 
 export default function Sneakers({ sneakers }: any) {
   if (!sneakers) return;
@@ -16,10 +17,16 @@ export default function Sneakers({ sneakers }: any) {
           <div className={`${styles.rightSide} ${styles.sneakers}`}>
             {sneakers.map((el: any, i: number) => {
               return (
-                <div className={styles.sneakersItem}>
-                  <figure style={{ backgroundImage: `url(${el.imageUrl})` }} />
-                  <h5 className={styles.title}>{el.title}</h5>
-                </div>
+                <Link href={"/admin/sneakers/update/" + el._id}>
+                  <div key={i} className={styles.sneakersItem}>
+                    <figure
+                      style={{
+                        backgroundImage: `url(http://localhost:3003/${el.images[0]})`,
+                      }}
+                    />
+                    <h5 className={styles.title}>{el.title}</h5>
+                  </div>
+                </Link>
               );
             })}
           </div>

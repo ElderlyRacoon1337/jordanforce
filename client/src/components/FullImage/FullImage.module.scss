@@ -1,0 +1,20 @@
+.root {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000087;
+  display: flex;
+  align-items: center;
+
+  figure {
+    width: 600px;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+  }
+}

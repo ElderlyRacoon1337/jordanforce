@@ -38,69 +38,87 @@ export const Items = ({ sneakers }: any) => {
             onClose={handleClose}
           >
             <MenuItem
+              divider
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 4 low");
+                setModel("Nike Jordan 4");
               }}
             >
-              Nike Jordan 4 low
+              Nike Jordan 4
             </MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 4 mid");
+                setModel("Nike Jordan 1 Low");
               }}
             >
-              Nike Jordan 4 mid
+              Nike Jordan 1 Low
             </MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 4 high");
+                setModel("Nike Jordan 1 Mid");
               }}
             >
-              Nike Jordan 4 high
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                setModel("Nike Jordan 1 low");
-              }}
-            >
-              Nike Jordan 1 low
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                setModel("Nike Jordan 1 mid");
-              }}
-            >
-              Nike Jordan 1 mid
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleClose();
-                setModel("Nike Jordan 1 high");
-              }}
-            >
-              Nike Jordan 1 high
+              Nike Jordan 1 Mid
             </MenuItem>
             <MenuItem
               divider
               onClick={() => {
                 handleClose();
-                setModel("Nike Air Force 1");
+                setModel("Nike Jordan 1 High");
               }}
             >
-              Nike Air Force 1
+              Nike Jordan 1 High
             </MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Все");
+                setModel("Nike Air Force 1 Low");
               }}
             >
-              Все
+              Nike Air Force 1 Low
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Air Force 1 Mid");
+              }}
+            >
+              Nike Air Force 1 Mid
+            </MenuItem>
+            <MenuItem
+              divider
+              onClick={() => {
+                handleClose();
+                setModel("Nike Air Force 1 High");
+              }}
+            >
+              Nike Air Force 1 High
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Dunk Low");
+              }}
+            >
+              Nike Dunk Low
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Dunk Mid");
+              }}
+            >
+              Nike Dunk Mid
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setModel("Nike Dunk High");
+              }}
+            >
+              Nike Dunk High
             </MenuItem>
           </Menu>
           <Menu

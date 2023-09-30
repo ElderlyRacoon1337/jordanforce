@@ -2,11 +2,12 @@ import { Api } from "@/utils/api";
 import { NextPage, NextPageContext } from "next";
 import React, { useEffect, useState } from "react";
 import styles from "./Sneakers.module.scss";
-import { Button } from "cutie-ui";
+import { Button, Loader } from "cutie-ui";
 import { countPrice } from "@/utils/countPrice";
 import { Size } from "@/components/Size";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
+import { FullImage } from "@/components/FullImage";
 
 interface Sneaker {
   _id: string;
@@ -28,21 +29,42 @@ interface SneakersProps {
 const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const dispatch = useDispatch();
-  const cartItems = useSelector((store) => store.cart.data);
+  const cartItems = useSelector((state) => state.cart.data);
+  const [isAddLoading, setIsAddLoading] = useState(false);
+  const [fullImageOpen, setFullImageOpen] = useState(false);
+  const [fullImageSrc, setFullImageSrc] = useState("");
+
+  const isInCart = useSelector((state) =>
+    Boolean(
+      state.cart.data.find(
+        (el) => el.size == selectedSize && el._id == data._id
+      )
+    )
+  );
 
   const handleAddToCart = () => {
-    try {
-      const newItem = {
-        ...data,
-        price: sizes.find((el: any) => el.size == selectedSize).price,
-        size: selectedSize,
-        id: cartItems.length + 1,
-      };
-      dispatch(addItem(newItem));
-      localStorage.setItem("cart", JSON.stringify([newItem, ...cartItems]));
-    } catch (error) {
-      console.log(error);
-    }
+    setIsAddLoading(true);
+    setTimeout(() => {
+      try {
+        const newItem = {
+          ...data,
+          price: sizes.find((el: any) => el.size == selectedSize).price,
+          size: selectedSize,
+          id: cartItems.length + 1,
+        };
+        dispatch(addItem(newItem));
+        localStorage.setItem("cart", JSON.stringify([newItem, ...cartItems]));
+        setIsAddLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsAddLoading(false);
+      }
+    }, 500);
+  };
+
+  const handleClickImage = (src: string) => {
+    setFullImageOpen(true);
+    setFullImageSrc(src);
   };
 
   return (
@@ -52,6 +74,9 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
           <div className={styles.sneakersLeft}>
             {data.images.map((el, i) => (
               <figure
+                onClick={() =>
+                  handleClickImage(`url(http://localhost:3003/${el})`)
+                }
                 className={styles.img}
                 style={{
                   backgroundImage: `url(http://localhost:3003/${el})`,
@@ -76,18 +101,33 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
                   size={el.size}
                   i={i}
                   price={el.price}
+                  id={data._id}
                 />
               ))}
             </div>
             <div className={styles.buttons}>
               <Button
-                onClick={handleAddToCart}
+                onClick={
+                  selectedSize
+                    ? !isInCart
+                      ? handleAddToCart
+                      : () => {}
+                    : () => {}
+                }
                 className={styles.button}
                 variant="contained2"
                 color="textPrimary"
                 size="large"
               >
-                Добавить в корзину
+                {!isAddLoading ? (
+                  isInCart ? (
+                    "В корзине"
+                  ) : (
+                    "Добавить в корзину"
+                  )
+                ) : (
+                  <Loader color="white" size={"17.5px"} fatness={"2px"} />
+                )}
               </Button>
               {/* <IconButton
                 className={styles.iconButton}
@@ -115,6 +155,9 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
           </div>
         </div>
       </div>
+      {fullImageOpen && (
+        <FullImage setFullImageOpen={setFullImageOpen} src={fullImageSrc} />
+      )}
     </div>
   );
 };

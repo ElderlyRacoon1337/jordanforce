@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Admin.module.scss";
 import { AdminMenu } from "@/components/AdminMenu";
 import { GetServerSideProps } from "next";
 import { Api } from "@/utils/api";
-import { Icon, IconButton } from "cutie-ui";
+import { Icon, IconButton, Tooltip } from "cutie-ui";
 
 export default function Orders({ orders }: any) {
   if (!orders) {
@@ -20,7 +20,8 @@ export default function Orders({ orders }: any) {
             <div className={styles.titles}>
               <div className={styles.title}>Email</div>
               <div className={styles.title}>Товары</div>
-              <div className={styles.title}>Дата заказа</div>
+              <div className={styles.title}>Дата</div>
+              <div className={styles.title}>Статус</div>
               <div className={styles.title}>Удалить</div>
             </div>
             <>
@@ -30,12 +31,13 @@ export default function Orders({ orders }: any) {
                     <div>{el.user.email}</div>
                     <div className={styles.orderItemsImages}>
                       {el.sneakers.length <= 3 ? (
-                        el.sneakers.map((item: any) => {
+                        el.sneakers.map((item: any, i: number) => {
                           return (
                             <figure
+                              key={i}
                               className={styles.orderItemsImg}
                               style={{
-                                backgroundImage: `url(${item.imageUrl})`,
+                                backgroundImage: `url(http://localhost:3003/${item.images[0]})`,
                               }}
                             />
                           );
@@ -45,9 +47,10 @@ export default function Orders({ orders }: any) {
                           {el.sneakers.slice(0, 2).map((item: any) => {
                             return (
                               <figure
+                                key={i}
                                 className={styles.orderItemsImg}
                                 style={{
-                                  backgroundImage: `url(${item.imageUrl})`,
+                                  backgroundImage: `url(http://localhost:3003/${item.images[0]})`,
                                 }}
                               />
                             );
@@ -59,8 +62,9 @@ export default function Orders({ orders }: any) {
                       )}
                     </div>
                     <div>{new Date(el.createdAt).toLocaleDateString("ru")}</div>
+                    <div>{el.status}</div>
                     <div>
-                      <IconButton>
+                      <IconButton color="textPrimary">
                         <Icon>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

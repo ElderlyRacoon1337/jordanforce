@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import { join } from 'path';
+var cors = require('cors');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,8 +13,9 @@ async function bootstrap() {
   app.use('/images', express.static(join(__dirname, '..', 'images')));
 
   app.enableCors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'http://localhost:3000/',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: '*',
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });

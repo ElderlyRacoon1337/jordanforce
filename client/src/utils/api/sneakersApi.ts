@@ -16,6 +16,11 @@ export const SneakersApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async update(dto: any) {
+    const { data } = await instance.patch("sneakers", dto);
+    return data;
+  },
+
   async upload(formData: any) {
     const { data } = await instance.post("sneakers/upload", formData);
     return data;
