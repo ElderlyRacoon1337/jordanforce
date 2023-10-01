@@ -59,7 +59,7 @@ export default function Users({ users }: any) {
                           handleClickDelete();
                           userId.current = el._id;
                         }}
-                        color="error"
+                        color="textPrimary"
                       >
                         <Icon>
                           <svg

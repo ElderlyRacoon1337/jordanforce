@@ -17,7 +17,7 @@ export default function AddSneakers({ sneakers }: any) {
           <div className={styles.rightSide}>
             <div className={styles.add}>
               <h1>Изменить товар</h1>
-              <ItemForm data={sneakers} />
+              <ItemForm isAdd={false} data={sneakers} />
             </div>
           </div>
         </div>

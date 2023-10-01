@@ -4,7 +4,6 @@ import { UpdateSneakerDto } from './dto/update-sneaker.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Sneakers } from './schemas/sneakers.schema';
 import { Model } from 'mongoose';
-import { User } from 'src/users/schemas/users.schema';
 import { UsersService } from 'src/users/users.service';
 import { jwtDecode } from 'src/auth/jwt.decode';
 

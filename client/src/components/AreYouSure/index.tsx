@@ -15,6 +15,7 @@ export const AreYouSure = ({ email, setOpen, setSure }: any) => {
         <div className={styles.buttons}>
           <Button
             className={styles.button}
+            color="textPrimary"
             onClick={() => {
               setOpen(false);
               setSure(true);
@@ -27,6 +28,7 @@ export const AreYouSure = ({ email, setOpen, setSure }: any) => {
             onClick={() => {
               setOpen(false);
             }}
+            color="textPrimary"
             variant="contained"
           >
             Нет

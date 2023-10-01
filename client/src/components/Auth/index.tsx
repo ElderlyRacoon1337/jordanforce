@@ -42,8 +42,8 @@ export const Auth = ({ setPopupOpen }: any) => {
     try {
       const { data } = await Api().user.register({
         name,
-        email: loginEmail,
-        password: loginPassword,
+        email: registrationEmail,
+        password: registrationPassword,
       });
       setUserData(data);
       setPopupOpen(false);

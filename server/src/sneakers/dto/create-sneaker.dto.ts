@@ -1,8 +1,10 @@
 export class CreateSneakerDto {
   title: string;
-  price: number;
+  minPrice: number;
   images: string[];
   sizes: number[];
   isAvailable?: boolean;
   model: string;
+  selectedSize?: number;
+  selectedPrice?: number;
 }

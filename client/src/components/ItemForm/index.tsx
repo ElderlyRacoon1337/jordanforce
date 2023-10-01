@@ -12,7 +12,11 @@ import {
 } from "cutie-ui";
 import { Api } from "@/utils/api";
 
-export const ItemForm = ({ data }: any) => {
+export const ItemForm = ({ data, isAdd }: any) => {
+  const [deleteStatus, setDeleteStatus] = useState<
+    "never" | "loading" | "loaded" | "error"
+  >("never");
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const [title, setTitle] = useState(data ? data.title : "");
   const [price, setPrice] = useState<Number | "">(data ? data.price : "");
   const [sizes, setSizes] = useState(
@@ -76,6 +80,19 @@ export const ItemForm = ({ data }: any) => {
       setSubmitStatus("success");
     } catch (error) {
       setSubmitStatus("error");
+      console.log(error);
+    }
+  };
+
+  const handleDelete = () => {
+    setDeleteStatus("loading");
+    try {
+      Api().sneakers.delete(data._id);
+      setDeleteStatus("loaded");
+      setDeleteAlertOpen(true);
+    } catch (error) {
+      setDeleteStatus("error");
+      setDeleteAlertOpen(true);
       console.log(error);
     }
   };
@@ -168,8 +185,19 @@ export const ItemForm = ({ data }: any) => {
         size="large"
         variant="contained"
       >
-        Добавить
+        {isAdd ? "Добавить" : "Изменить"}
       </Button>
+      {!isAdd && (
+        <Button
+          onClick={handleDelete}
+          color="#5C1F28"
+          size="large"
+          className={styles.button}
+          variant="contained"
+        >
+          Удалить
+        </Button>
+      )}
       <Menu
         fullWidth
         // @ts-ignore
@@ -269,6 +297,25 @@ export const ItemForm = ({ data }: any) => {
         color="success"
       >
         Фотография загружена
+      </Alert>
+      <Alert
+        open={deleteAlertOpen}
+        onClose={() => {
+          setDeleteAlertOpen(false);
+        }}
+        color={`${
+          deleteStatus == "loaded"
+            ? "success"
+            : deleteStatus == "error"
+            ? "error"
+            : ""
+        }`}
+      >
+        {deleteStatus == "loaded"
+          ? "Товар удален"
+          : deleteStatus == "error"
+          ? "Ошибка при удалении товара"
+          : ""}
       </Alert>
     </div>
   );

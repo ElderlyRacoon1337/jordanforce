@@ -6,6 +6,11 @@ export const OrderApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async getOne(id: string) {
+    const { data } = await instance.get("orders/" + id);
+    return data;
+  },
+
   async getOrdersByUser(id: number) {
     const { data } = await instance.get(`orders/${id}`);
     return data;

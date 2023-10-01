@@ -38,14 +38,17 @@ export class OrdersService {
     const orders = await this.ordersModel
       .find()
       .populate('user')
-      .populate('sneakers');
+      .populate('sneakers.id');
 
     return orders;
   }
 
   async findOne(token: string, id: string) {
     const userId = jwtDecode(token);
-    const order = await this.ordersModel.findById(id);
+    const order = await this.ordersModel
+      .findById(id)
+      .populate('user')
+      .populate('sneakers.id');
     const user = await this.usersService.findOne(userId);
 
     if (!user || !order) return;

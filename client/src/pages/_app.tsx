@@ -12,7 +12,7 @@ import {
   setUserData,
 } from "@/redux/slices/userSlice";
 import { TopBar } from "@/components/TopBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setItems } from "@/redux/slices/cartSlice";
 

@@ -25,4 +25,9 @@ export const SneakersApi = (instance: AxiosInstance) => ({
     const { data } = await instance.post("sneakers/upload", formData);
     return data;
   },
+
+  async delete(id: string) {
+    const { data } = await instance.delete("sneakers/" + id);
+    return data;
+  },
 });

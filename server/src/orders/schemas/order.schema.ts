@@ -3,6 +3,12 @@ import mongoose, { HydratedDocument } from 'mongoose';
 
 export type OrdersDocument = HydratedDocument<Order>;
 
+interface sneakersType {
+  id: mongoose.Schema.Types.ObjectId;
+  size: number;
+  price: number;
+}
+
 @Schema({ timestamps: true })
 export class Order {
   _id: mongoose.Schema.Types.ObjectId;
@@ -11,7 +17,7 @@ export class Order {
     ref: 'Sneakers',
     required: true,
   })
-  sneakers: mongoose.Schema.Types.ObjectId[];
+  sneakers: sneakersType[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: mongoose.Schema.Types.ObjectId;
