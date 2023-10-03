@@ -205,7 +205,6 @@
   .images {
     margin-bottom: 30px;
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
 
     div {
@@ -214,11 +213,13 @@
       p {
         max-width: 150px;
         margin-bottom: 10px;
+        font-weight: 500;
       }
     }
     figure {
       width: 200px;
       height: 200px;
+      margin-bottom: 20px;
     }
   }
 

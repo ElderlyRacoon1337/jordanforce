@@ -41,6 +41,29 @@ export const ItemForm = ({ data, isAdd }: any) => {
     setAnchorEl(e.currentTarget);
   };
 
+  const handleUpdate = () => {
+    setSubmitStatus("loading");
+    try {
+      Api().sneakers.update(data._id, {
+        title,
+        price,
+        sizes: sizes
+          .replace(/ /g, "")
+          .split(",")
+          .map((el) => {
+            return { size: +el.split("-")[0], price: +el.split("-")[1] };
+          }),
+        isAvailable,
+        images,
+        model,
+      });
+      setSubmitStatus("success");
+    } catch (error) {
+      setSubmitStatus("error");
+      console.log(error);
+    }
+  };
+
   const inputFileRef = useRef(null);
   const handleChangeFile = async (event: any) => {
     try {
@@ -181,7 +204,7 @@ export const ItemForm = ({ data, isAdd }: any) => {
             />
           )
         }
-        onClick={handleSubmit}
+        onClick={isAdd ? handleSubmit : handleUpdate}
         size="large"
         variant="contained"
       >
@@ -209,10 +232,10 @@ export const ItemForm = ({ data, isAdd }: any) => {
           divider
           onClick={() => {
             handleClose();
-            setModel("Nike Jordan 4");
+            setModel("Nike Air Jordan 4");
           }}
         >
-          Nike Jordan 4
+          Nike Air Jordan 4
         </MenuItem>
         <MenuItem
           onClick={() => {

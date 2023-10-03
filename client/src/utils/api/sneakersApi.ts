@@ -16,8 +16,8 @@ export const SneakersApi = (instance: AxiosInstance) => ({
     return data;
   },
 
-  async update(dto: any) {
-    const { data } = await instance.patch("sneakers", dto);
+  async update(id: string, dto: any) {
+    const { data } = await instance.patch("sneakers/" + id, dto);
     return data;
   },
 
