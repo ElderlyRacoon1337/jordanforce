@@ -24,8 +24,35 @@ export class SneakersService {
     return sneakers.save();
   }
 
-  async findAll() {
-    return this.sneakersModel.find();
+  async findAll(sortBy: string, model: string, search: string = '') {
+    let sortOption: { [key: string]: 1 | -1 } = {};
+
+    switch (sortBy) {
+      case 'relevance':
+        sortOption = { _id: -1 }; // сортировка по умолчанию (релевантность)
+        break;
+      case 'popularity':
+        sortOption = { ordered: -1 };
+        break;
+      case 'priceAsc':
+        sortOption = { price: 1 };
+        break;
+      case 'priceDesc':
+        sortOption = { price: -1 };
+        break;
+      default:
+        sortOption = { _id: -1 }; // сортировка по умолчанию (релевантность)
+    }
+
+    const query: any = {};
+    if (search) {
+      query.title = { $regex: search, $options: 'i' };
+    }
+    if (model) {
+      query.model = { $regex: model, $options: 'i' };
+    }
+
+    return this.sneakersModel.find(query).sort(sortOption).exec();
   }
 
   findOne(id: string) {

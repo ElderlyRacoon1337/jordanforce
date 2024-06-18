@@ -11,6 +11,7 @@ import {
   Request,
   Response,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { SneakersService } from './sneakers.service';
 import { CreateSneakerDto } from './dto/create-sneaker.dto';
@@ -60,8 +61,12 @@ export class SneakersController {
   }
 
   @Get()
-  findAll() {
-    return this.sneakersService.findAll();
+  findAll(
+    @Query('sortBy') sortBy: string,
+    @Query('model') model: string,
+    @Query('search') search: string,
+  ) {
+    return this.sneakersService.findAll(sortBy, model, search);
   }
 
   @Get(':id')
