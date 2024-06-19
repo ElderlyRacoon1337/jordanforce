@@ -21,7 +21,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         return { ...el, price };
       })
     );
-
     return {
       props: {
         sneakers: sneakersMapped,

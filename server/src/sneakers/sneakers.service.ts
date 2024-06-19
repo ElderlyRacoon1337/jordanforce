@@ -34,10 +34,10 @@ export class SneakersService {
       case 'popularity':
         sortOption = { ordered: -1 };
         break;
-      case 'priceAsc':
+      case 'priceASC':
         sortOption = { price: 1 };
         break;
-      case 'priceDesc':
+      case 'priceDESC':
         sortOption = { price: -1 };
         break;
       default:

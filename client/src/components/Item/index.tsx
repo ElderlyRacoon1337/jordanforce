@@ -7,10 +7,10 @@ interface ItemProps {
   title: string;
   images: string[];
   id: string;
-  price: number;
+  ruPrice: number;
 }
 
-export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
+export const Item: React.FC<ItemProps> = ({ title, images, id, ruPrice }) => {
   return (
     <Link href={"/sneakers/" + id}>
       <div className={styles.root}>
@@ -21,7 +21,7 @@ export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
           }}
         />
         <h5 className={styles.title}>{title}</h5>
-        <p className={styles.price}>от {price} руб.</p>
+        <p className={styles.price}>от {ruPrice} руб.</p>
 
         {/* <IconButton color="red" className={styles.like}>
         <Icon>

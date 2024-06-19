@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Cart.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { CartItem } from "@/components/CartItem";
 import { Button, Input } from "cutie-ui";
 import clsx from "clsx";

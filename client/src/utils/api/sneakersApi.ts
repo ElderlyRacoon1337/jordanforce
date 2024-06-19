@@ -1,8 +1,14 @@
 import { AxiosInstance } from "axios";
+import qs from "qs";
 
 export const SneakersApi = (instance: AxiosInstance) => ({
-  async getAll() {
-    const { data } = await instance.get("sneakers");
+  async getAll(sortBy: string, model: string, search: string) {
+    const queryParams = qs.stringify(
+      { sortBy, model, search },
+      { encode: false }
+    );
+
+    const { data } = await instance.get(`/sneakers?${queryParams}`);
     return data;
   },
 

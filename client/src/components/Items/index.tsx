@@ -1,11 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Items.module.scss";
 import { Item } from "../Item";
 import { Button, Menu, MenuItem } from "cutie-ui";
+import { useRouter } from "next/router";
+import { Api } from "@/utils/api";
 
 export const Items = ({ sneakers }: any) => {
-  const [model, setModel] = useState("Все");
-  const [sortBy, setSortBy] = useState("Релевантности");
+  const router = useRouter();
+  const { sortBy, model, search } = router.query;
+  const [sneakersLocal, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [router.query]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await Api().sneakers.getAll(sortBy, model, search);
+      setProducts(response);
+    } catch (error) {
+      console.error("Error fetching products", error);
+    }
+  };
+
+  const updateQueryParams = (key, value) => {
+    const newQuery = { ...router.query, [key]: value };
+    router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+      shallow: true,
+    });
+  };
+
+  const handleSortByChange = (sortBy: string) => {
+    let enSortBy = "";
+
+    switch (sortBy) {
+      case "Релевантности":
+        enSortBy = "relevance";
+        break;
+      case "Популярности":
+        enSortBy = "popularity";
+        break;
+      case "Возрастанию цены":
+        enSortBy = "priceASC";
+        break;
+      case "Убыванию цены":
+        enSortBy = "priceDESC";
+        break;
+      default:
+        break;
+    }
+    updateQueryParams("sortBy", enSortBy);
+  };
+
+  const handleModelChange = (model: string) => {
+    updateQueryParams("model", model);
+  };
+
+  const handlesearchChange = (e) => {
+    const value = e.target.value;
+    updateQueryParams("search", value);
+  };
 
   const [ancorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(ancorEl);
@@ -24,7 +78,9 @@ export const Items = ({ sneakers }: any) => {
   const handleClickSort = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorElSort(e.currentTarget);
   };
+
   if (!sneakers) return;
+  if (!sneakersLocal) return;
 
   return (
     <div className={styles.root}>
@@ -41,7 +97,7 @@ export const Items = ({ sneakers }: any) => {
               divider
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 4");
+                handleModelChange("Nike Jordan 4");
               }}
             >
               Nike Jordan 4
@@ -49,7 +105,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 1 Low");
+                handleModelChange("Nike Jordan 1 Low");
               }}
             >
               Nike Jordan 1 Low
@@ -57,7 +113,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 1 Mid");
+                handleModelChange("Nike Jordan 1 Mid");
               }}
             >
               Nike Jordan 1 Mid
@@ -66,7 +122,7 @@ export const Items = ({ sneakers }: any) => {
               divider
               onClick={() => {
                 handleClose();
-                setModel("Nike Jordan 1 High");
+                handleModelChange("Nike Jordan 1 High");
               }}
             >
               Nike Jordan 1 High
@@ -74,7 +130,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Air Force 1 Low");
+                handleModelChange("Nike Air Force 1 Low");
               }}
             >
               Nike Air Force 1 Low
@@ -82,7 +138,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Air Force 1 Mid");
+                handleModelChange("Nike Air Force 1 Mid");
               }}
             >
               Nike Air Force 1 Mid
@@ -91,7 +147,7 @@ export const Items = ({ sneakers }: any) => {
               divider
               onClick={() => {
                 handleClose();
-                setModel("Nike Air Force 1 High");
+                handleModelChange("Nike Air Force 1 High");
               }}
             >
               Nike Air Force 1 High
@@ -99,7 +155,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Dunk Low");
+                handleModelChange("Nike Dunk Low");
               }}
             >
               Nike Dunk Low
@@ -107,7 +163,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Dunk Mid");
+                handleModelChange("Nike Dunk Mid");
               }}
             >
               Nike Dunk Mid
@@ -115,7 +171,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setModel("Nike Dunk High");
+                handleModelChange("Nike Dunk High");
               }}
             >
               Nike Dunk High
@@ -131,7 +187,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                setSortBy("Релевантности");
+                handleSortByChange("Релевантности");
               }}
             >
               Релевантности
@@ -139,7 +195,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                setSortBy("Популярности");
+                handleSortByChange("Популярности");
               }}
             >
               Популярности
@@ -147,7 +203,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                setSortBy("Возростанию цены");
+                handleSortByChange("Возрастанию цены");
               }}
             >
               Возростанию цены
@@ -155,7 +211,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                setSortBy("Убыванию цены");
+                handleSortByChange("Убыванию цены");
               }}
             >
               Убыванию цены
@@ -181,7 +237,7 @@ export const Items = ({ sneakers }: any) => {
           </Button>
         </div>
         <div className={styles.items}>
-          {sneakers.map((el: any, i: number) => {
+          {sneakersLocal.map((el: any, i: number) => {
             return (
               <Item
                 key={i}
