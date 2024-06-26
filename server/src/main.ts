@@ -9,6 +9,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
+
+  // Middleware to add CORS headers for static images
+  app.use('/images', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    next();
+  });
+
   app.use('/images', express.static(join(__dirname, '..', 'images')));
 
   app.enableCors({

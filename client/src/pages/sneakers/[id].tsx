@@ -3,7 +3,6 @@ import { NextPage, NextPageContext } from "next";
 import React, { useEffect, useState } from "react";
 import styles from "./Sneakers.module.scss";
 import { Button, Loader } from "cutie-ui";
-import { countPrice } from "@/utils/countPrice";
 import { Size } from "@/components/Size";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
@@ -26,7 +25,7 @@ interface SneakersProps {
   sizes: any;
 }
 
-const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
+const sneakers: NextPage<SneakersProps> = ({ data }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.data);
@@ -48,7 +47,7 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
       try {
         const newItem = {
           ...data,
-          price: sizes.find((el: any) => el.size == selectedSize).price,
+          price: data.sizes.find((el: any) => el.size == selectedSize).price,
           size: selectedSize,
           id: cartItems.length + 1,
         };
@@ -91,10 +90,10 @@ const sneakers: NextPage<SneakersProps> = ({ data, ruPrice, sizes }) => {
               <span>Модель: </span>
               {data.model}
             </p>
-            <p className={styles.price}>от ₽{ruPrice}</p>
+            <p className={styles.price}>от ₽{data.price}</p>
             <p className={styles.delivery}>Доставка включена в стоимость</p>
             <div className={styles.sizes}>
-              {sizes.map((el: any, i: number) => (
+              {data.sizes.map((el: any, i: number) => (
                 <Size
                   selectedSize={selectedSize}
                   setSelectedSize={setSelectedSize}
@@ -169,15 +168,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   try {
     const data = await Api().sneakers.getOne(id as string);
 
-    const ruPrice = await countPrice(data.price);
-    const sizes = await Promise.all(
-      data.sizes.map(async (el: any) => {
-        const price = await countPrice(el.price);
-        return { ...el, price };
-      })
-    );
-
-    return { props: { data, ruPrice, sizes } };
+    return { props: { data } };
   } catch (error) {
     console.log(error);
     return { props: {} };

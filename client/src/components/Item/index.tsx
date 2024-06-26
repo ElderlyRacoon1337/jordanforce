@@ -2,26 +2,33 @@ import React, { useEffect, useState } from "react";
 import styles from "./Item.module.scss";
 import Link from "next/link";
 import { countPrice } from "@/utils/countPrice";
+import ImageEditor from "../ImageEditor";
 
 interface ItemProps {
   title: string;
   images: string[];
   id: string;
-  ruPrice: number;
+  price: number;
 }
 
-export const Item: React.FC<ItemProps> = ({ title, images, id, ruPrice }) => {
+export const Item: React.FC<ItemProps> = ({ title, images, id, price }) => {
+  const [backgroundImage, setBackgroundImage] = useState("");
+
   return (
     <Link href={"/sneakers/" + id}>
       <div className={styles.root}>
-        <figure
+        <ImageEditor
+          imageUrl={`http://localhost:3003/${images[0]}`}
+          // setBackgroundImage={setBackgroundImage}
+        />
+        {/* <figure
           className={styles.image}
           style={{
             backgroundImage: `url('http://localhost:3003/${images[0]}')`,
           }}
-        />
+        /> */}
         <h5 className={styles.title}>{title}</h5>
-        <p className={styles.price}>от {ruPrice} руб.</p>
+        <p className={styles.price}>от {price} руб.</p>
 
         {/* <IconButton color="red" className={styles.like}>
         <Icon>

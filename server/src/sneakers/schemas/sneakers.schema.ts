@@ -3,7 +3,8 @@ import mongoose, { HydratedDocument } from 'mongoose';
 
 export type SneakersDocument = HydratedDocument<Sneakers>;
 
-interface Size {
+export interface Size {
+  // Добавлено `export`
   size: number;
   price: number;
 }

@@ -8,6 +8,7 @@ import { SneakersModule } from './sneakers/sneakers.module';
 import { OrdersModule } from './orders/orders.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { join } from 'path';
     AuthModule,
     SneakersModule,
     OrdersModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

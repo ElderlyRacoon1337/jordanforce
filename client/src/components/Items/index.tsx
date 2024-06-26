@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Items.module.scss";
 import { Item } from "../Item";
-import { Button, Menu, MenuItem } from "cutie-ui";
+import { Button, Icon, Menu, MenuItem } from "cutie-ui";
 import { useRouter } from "next/router";
 import { Api } from "@/utils/api";
+import { models } from "@/data/models";
+import Image from "next/image";
 
 export const Items = ({ sneakers }: any) => {
   const router = useRouter();
@@ -31,25 +33,7 @@ export const Items = ({ sneakers }: any) => {
   };
 
   const handleSortByChange = (sortBy: string) => {
-    let enSortBy = "";
-
-    switch (sortBy) {
-      case "Релевантности":
-        enSortBy = "relevance";
-        break;
-      case "Популярности":
-        enSortBy = "popularity";
-        break;
-      case "Возрастанию цены":
-        enSortBy = "priceASC";
-        break;
-      case "Убыванию цены":
-        enSortBy = "priceDESC";
-        break;
-      default:
-        break;
-    }
-    updateQueryParams("sortBy", enSortBy);
+    updateQueryParams("sortBy", sortBy);
   };
 
   const handleModelChange = (model: string) => {
@@ -79,14 +63,49 @@ export const Items = ({ sneakers }: any) => {
     setAnchorElSort(e.currentTarget);
   };
 
+  const sortByToRus = (sortBy: string) => {
+    let ruSortBy = "Сортировка по";
+    switch (sortBy) {
+      case "relevance":
+        ruSortBy = "Релевантности";
+        break;
+      case "popularity":
+        ruSortBy = "Популярности";
+        break;
+      case "priceASC":
+        ruSortBy = "Возрастанию цены";
+        break;
+      case "priceDESC":
+        ruSortBy = "Убыванию цены";
+        break;
+      default:
+        break;
+    }
+    return ruSortBy;
+  };
+
   if (!sneakers) return;
   if (!sneakersLocal) return;
 
   return (
     <div className={styles.root}>
       <div className="container">
+        <ul className={styles.models}>
+          {models.map((model) => {
+            return (
+              <li
+                onClick={() => {
+                  handleModelChange(model);
+                }}
+              >
+                {model}
+              </li>
+            );
+          })}
+        </ul>
+        <figure className={styles.banner}></figure>
         <div className={styles.menu}>
-          <Menu
+          {/* <Menu
             className={styles.menu_el}
             fullWidth
             open={open}
@@ -97,7 +116,7 @@ export const Items = ({ sneakers }: any) => {
               divider
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Jordan 4");
+                handleModelChange("Nike Air Jordan 4");
               }}
             >
               Nike Jordan 4
@@ -105,7 +124,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Jordan 1 Low");
+                handleModelChange("Nike Air Jordan 1 Low");
               }}
             >
               Nike Jordan 1 Low
@@ -113,7 +132,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Jordan 1 Mid");
+                handleModelChange("Nike Air Jordan 1 Mid");
               }}
             >
               Nike Jordan 1 Mid
@@ -122,7 +141,7 @@ export const Items = ({ sneakers }: any) => {
               divider
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Jordan 1 High");
+                handleModelChange("Nike Air Jordan 1 High");
               }}
             >
               Nike Jordan 1 High
@@ -130,7 +149,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Air Force 1 Low");
+                handleModelChange("Nike Air Air Force 1 Low");
               }}
             >
               Nike Air Force 1 Low
@@ -138,7 +157,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                handleModelChange("Nike Air Force 1 Mid");
+                handleModelChange("Nike  Air Force 1 Mid");
               }}
             >
               Nike Air Force 1 Mid
@@ -176,7 +195,7 @@ export const Items = ({ sneakers }: any) => {
             >
               Nike Dunk High
             </MenuItem>
-          </Menu>
+          </Menu> */}
           <Menu
             className={styles.menu_el}
             fullWidth
@@ -187,7 +206,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                handleSortByChange("Релевантности");
+                handleSortByChange("relevance");
               }}
             >
               Релевантности
@@ -195,7 +214,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                handleSortByChange("Популярности");
+                handleSortByChange("popularity");
               }}
             >
               Популярности
@@ -203,7 +222,7 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                handleSortByChange("Возрастанию цены");
+                handleSortByChange("priceASC");
               }}
             >
               Возростанию цены
@@ -211,29 +230,56 @@ export const Items = ({ sneakers }: any) => {
             <MenuItem
               onClick={() => {
                 handleCloseSort();
-                handleSortByChange("Убыванию цены");
+                handleSortByChange("priceDESC");
               }}
             >
               Убыванию цены
             </MenuItem>
           </Menu>
-          <p>Модель:</p>
           <Button
-            variant="outlined"
-            color="textPrimary"
-            className={styles.button}
-            onClick={handleClick}
-          >
-            {model}
-          </Button>
-          <p>Сортировка по:</p>
-          <Button
-            variant="outlined"
+            // variant="outlined4"
             color="textPrimary"
             className={styles.button}
             onClick={handleClickSort}
+            endIcon={
+              openSort ? (
+                <Icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 15.75 7.5-7.5 7.5 7.5"
+                    />
+                  </svg>
+                </Icon>
+              ) : (
+                <Icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </Icon>
+              )
+            }
           >
-            {sortBy}
+            {sortByToRus(sortBy)}
           </Button>
         </div>
         <div className={styles.items}>
